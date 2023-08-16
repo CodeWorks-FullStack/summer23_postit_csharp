@@ -35,4 +35,22 @@ public class PicturesService
 
     return picture;
   }
+
+  internal List<Picture> GetPicturesByAlbumId(int albumId)
+  {
+    List<Picture> pictures = _picturesRepository.GetPicturesByAlbumId(albumId);
+    return pictures;
+  }
+
+  internal void RemovePicture(int pictureId, string userId)
+  {
+    Picture picture = GetPictureById(pictureId);
+
+    if (picture.CreatorId != userId)
+    {
+      throw new Exception("NOT YOUR DATA");
+    }
+
+    _picturesRepository.RemovePicture(pictureId);
+  }
 }

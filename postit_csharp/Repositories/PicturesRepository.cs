@@ -50,4 +50,35 @@ public class PicturesRepository
 
     return picture;
   }
+
+  internal List<Picture> GetPicturesByAlbumId(int albumId)
+  {
+    string sql = @"
+      SELECT
+      pic.*,
+      acc.*
+      FROM pictures pic
+      JOIN accounts acc ON pic.creatorId = acc.id
+      WHERE pic.albumId = @albumId
+      ;";
+
+    List<Picture> pictures = _db.Query<Picture, Profile, Picture>(
+      sql,
+      (picture, profile) =>
+      {
+        picture.Creator = profile;
+        return picture;
+      }
+      ,
+      new { albumId }
+      ).ToList();
+    return pictures;
+  }
+
+  internal void RemovePicture(int pictureId)
+  {
+    string sql = "DELETE FROM pictures WHERE id = @pictureId LIMIT 1;";
+
+    _db.Execute(sql, new { pictureId });
+  }
 }

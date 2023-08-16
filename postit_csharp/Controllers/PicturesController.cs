@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace postit_csharp.Controllers;
 
@@ -29,6 +24,22 @@ public class PicturesController : ControllerBase
       pictureData.CreatorId = userInfo.Id;
       Picture picture = _picturesService.CreatePicture(pictureData);
       return Ok(picture);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
+  [Authorize]
+  [HttpDelete("{pictureId}")]
+  public async Task<ActionResult<string>> RemovePicture(int pictureId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      _picturesService.RemovePicture(pictureId, userInfo.Id);
+      return Ok("Picture was deleted");
     }
     catch (Exception e)
     {

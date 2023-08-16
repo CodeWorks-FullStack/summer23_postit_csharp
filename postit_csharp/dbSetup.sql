@@ -57,3 +57,5 @@ SELECT
 
 UPDATE albums SET archived = true WHERE id = 1;
 
+
+SELECT * FROM pictures WHERE albumId = 3;
