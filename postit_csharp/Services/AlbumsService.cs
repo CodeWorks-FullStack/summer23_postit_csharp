@@ -41,6 +41,10 @@ public class AlbumsService
   {
     Album album = _albumsRepository.GetAlbumById(albumId);
 
+    if (album == null)
+    {
+      throw new Exception("Your request was <i>exceptional</i>");
+    }
 
     return album;
   }

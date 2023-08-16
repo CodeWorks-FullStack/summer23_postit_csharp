@@ -21,6 +21,19 @@ CREATE TABLE
         FOREIGN KEY(creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 
+CREATE TABLE pictures(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+    imgUrl VARCHAR(500) NOT NULL,
+    albumId INT NOT NULL,
+    creatorId VARCHAR(255) NOT NULL,
+    FOREIGN KEY (albumId) REFERENCES albums(id) ON DELETE CASCADE,
+    FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
+) default charset utf8 COMMENT '';
+
+DROP TABLE pictures;
+
 DROP TABLE albums;
 
 INSERT INTO albums (title, category, coverImg, creatorId)
@@ -43,3 +56,4 @@ SELECT
     WHERE alb.id = 2 LIMIT 1;
 
 UPDATE albums SET archived = true WHERE id = 1;
+
