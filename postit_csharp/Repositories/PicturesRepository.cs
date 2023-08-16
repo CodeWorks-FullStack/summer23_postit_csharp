@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace postit_csharp.Repositories;
 
@@ -23,7 +19,6 @@ public class PicturesRepository
     ;";
 
     int pictureId = _db.ExecuteScalar<int>(sql, pictureData);
-    // pictureData.Id = pictureId;
     return pictureId;
   }
 

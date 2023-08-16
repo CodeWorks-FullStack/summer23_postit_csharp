@@ -18,6 +18,8 @@ CREATE TABLE
         archived BOOLEAN DEFAULT FALSE,
         coverImg VARCHAR(700) NOT NULL,
         creatorId VARCHAR(255) NOT NULL,
+        -- NOTE foreign key creates a reference to another piece of data stored within a seperate table
+        -- NOTE ON DELETE CASCADE will delete all data in this table if the piece of data it references is ever deleted
         FOREIGN KEY(creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 
@@ -41,6 +43,7 @@ VALUES ('hot dogs', 'dogs','https://images.unsplash.com/photo-1541214113241-2157
 '64dcedd3c5d6acdbaa571baa'
     );
 
+-- NOTE join will bring in rows from another table and squash them together into one large row
 SELECT 
 alb.*, 
 acc.*

@@ -4,6 +4,7 @@ namespace postit_csharp.Controllers;
 [Route("api/[controller]")]
 public class AlbumsController : ControllerBase
 {
+  // NOTE you can bring in multiple dependencies if needed, but they all need to be assigned in your constructor
   private readonly AlbumsService _albumsService;
   private readonly PicturesService _picturesService;
   private readonly Auth0Provider _auth0Provider;
@@ -15,14 +16,17 @@ public class AlbumsController : ControllerBase
     _picturesService = picturesService;
   }
 
+  // NOTE Authorize decorator will throw an error if you make a request to this endpoint without a bearer token
   [Authorize]
   [HttpPost]
+  // NOTE Task return type is associated with async requests
   public async Task<ActionResult<Album>> CreateAlbum([FromBody] Album albumData)
   {
     try
     {
+      // NOTE pulls the userInfo object from Auth0
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-      // req.body.creatorId = req.userInfo.id
+      // NOTE node equivalent: req.body.creatorId = req.userInfo.id
       albumData.CreatorId = userInfo.Id;
       Album album = _albumsService.CreateAlbum(albumData);
       return Ok(album);
@@ -78,6 +82,7 @@ public class AlbumsController : ControllerBase
     }
   }
 
+  // NOTE url path will look like https://localhost:7045/api/:id/pictures
   [HttpGet("{albumId}/pictures")]
   public ActionResult<List<Picture>> GetPicturesByAlbumId(int albumId)
   {

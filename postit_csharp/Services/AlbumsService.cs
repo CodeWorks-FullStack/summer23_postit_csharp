@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace postit_csharp.Services;
 
@@ -18,6 +14,7 @@ public class AlbumsService
   {
     Album album = GetAlbumById(albumId);
 
+    // NOTE validating creator
     if (album.CreatorId != userId)
     {
       throw new Exception("NOT YOUR DATA TO DELETE");
