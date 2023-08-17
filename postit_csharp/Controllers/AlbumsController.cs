@@ -8,12 +8,14 @@ public class AlbumsController : ControllerBase
   private readonly AlbumsService _albumsService;
   private readonly PicturesService _picturesService;
   private readonly Auth0Provider _auth0Provider;
+  private readonly CollaboratorsService _collaboratorsService;
 
-  public AlbumsController(AlbumsService albumsService, Auth0Provider auth0Provider, PicturesService picturesService)
+  public AlbumsController(AlbumsService albumsService, Auth0Provider auth0Provider, PicturesService picturesService, CollaboratorsService collaboratorsService)
   {
     _albumsService = albumsService;
     _auth0Provider = auth0Provider;
     _picturesService = picturesService;
+    _collaboratorsService = collaboratorsService;
   }
 
   // NOTE Authorize decorator will throw an error if you make a request to this endpoint without a bearer token
@@ -90,6 +92,20 @@ public class AlbumsController : ControllerBase
     {
       List<Picture> pictures = _picturesService.GetPicturesByAlbumId(albumId);
       return Ok(pictures);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
+  [HttpGet("{albumId}/collaborators")]
+  public ActionResult<List<ProfileCollaboration>> GetCollaboratorsByAlbumId(int albumId)
+  {
+    try
+    {
+      List<ProfileCollaboration> collaborators = _collaboratorsService.GetCollaboratorsByAlbumId(albumId);
+      return Ok(collaborators);
     }
     catch (Exception e)
     {

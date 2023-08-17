@@ -34,6 +34,20 @@ CREATE TABLE pictures(
     FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 
+CREATE TABLE collaborators(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    albumId INT NOT NULL,
+    accountId VARCHAR(255) NOT NULL,
+
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+    FOREIGN KEY (albumId) REFERENCES albums(id) ON DELETE CASCADE,
+    FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE CASCADE
+) default charset utf8 COMMENT '';
+
+DROP TABLE collaborators;
+
+
 DROP TABLE pictures;
 
 DROP TABLE albums;
@@ -62,3 +76,11 @@ UPDATE albums SET archived = true WHERE id = 1;
 
 
 SELECT * FROM pictures WHERE albumId = 3;
+
+SELECT 
+collab.*,
+acc.*
+FROM collaborators collab
+JOIN accounts acc ON collab.accountId = acc.id
+WHERE collab.albumId = 23
+;
